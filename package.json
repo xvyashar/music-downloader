@@ -1,0 +1,18 @@
+{
+  "name": "music-downloader",
+  "version": "1.0.0",
+  "description": "a telegram bot for searching and downloading music's in spotify, soundcloud, and youtube",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.1",
+    "express": "^4.18.2",
+    "telegraf": "^4.11.2"
+  }
+}
