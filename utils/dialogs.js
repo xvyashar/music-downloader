@@ -6,7 +6,14 @@ exports.enDic = {
     keyboardSettings: '⚙ Settings',
     dialogInMainMenu: 'Main Menu',
     dialogEnterMusicNameToSearch: 'Enter a track name to search',
-    dialogForbinned: "Sorry!\nOur local server can't connect to spotify service"
+    dialogForbinned: "Sorry!\nOur local server can't connect to spotify service",
+    dialogEnterYTLink: 'Enter a youtube link',
+    dialogBadLink: 'Bad Link!',
+    dialogDownloadFailed: 'Download Failed!',
+    dialogDownloadStarting: 'Download is starting...',
+    dialogDownloading: 'Downloading...',
+    dialogYTUploading: 'Uploading to telegram...',
+    inlineKeyBack: 'Back to main menu'
 };
 
 exports.faDic = {
@@ -17,5 +24,12 @@ exports.faDic = {
     keyboardSettings: '⚙ تنظیمات',
     dialogInMainMenu: 'منوی اصلی',
     dialogEnterMusicNameToSearch: 'نام ترک مورد نظر را وارد کنید',
-    dialogForbinned: "با عرض پوذش\nسرویس اسپاتیفای در سرور لوکال ما در دسترس نمی باشد"
+    dialogForbinned: "با عرض پوذش\nسرویس اسپاتیفای در سرور لوکال ما در دسترس نمی باشد",
+    dialogEnterYTLink: 'لینک ویدیو یوتیوب را قرار دهید',
+    dialogBadLink: 'لینک صحیح نمیباشد',
+    dialogDownloadFailed: 'دانلود ناموفقیت آمیز بود',
+    dialogDownloading: 'در حال دانلود...',
+    dialogDownloadStarting: 'در حال شروع دانلود...',
+    dialogYTUploading: 'در حال آپلود در تلگرام...',
+    inlineKeyBack: 'برگشت به منو اصلی'
 };

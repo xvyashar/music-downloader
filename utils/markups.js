@@ -13,5 +13,12 @@ const mainKeyboard = (dic) => {
     ]);
 }
 
+const backBtnKeyboard = (dic) => {
+    return Markup.inlineKeyboard([
+        [Markup.button.callback(dic.inlineKeyBack, dic.inlineKeyBack)]
+    ]);
+}
+
 exports.langKeyoard = langKeyoard;
 exports.mainKeyboard = mainKeyboard;
+exports.backBtnKeyboard = backBtnKeyboard;
