@@ -75,7 +75,13 @@ bot.hears(enDic.keyboardSpotifyLink, async ctx => {
 
 bot.hears(enDic.keyboardSoundcloudLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
-        //TODO DOWNLOAD MUSIC VIA SOUNDCLOUD LINK
+        await setStatus(ctx, 'IN_SOUNDCLOUD_LINK');
+        ctx.reply('- - - - - - - - - - - - - - - - -', {
+            reply_markup: Markup.removeKeyboard().reply_markup
+        });
+        ctx.reply(enDic.dialogEnterSCDLLink, {
+            reply_markup: keyboards.backBtnKeyboard(enDic).reply_markup
+        });
     }
 });
 
@@ -125,7 +131,13 @@ bot.hears(faDic.keyboardSpotifyLink, async ctx => {
 
 bot.hears(faDic.keyboardSoundcloudLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
-        //TODO DOWNLOAD MUSIC VIA SOUNDCLOUD LINK
+        await setStatus(ctx, 'IN_SOUNDCLOUD_LINK');
+        ctx.reply('- - - - - - - - - - - - - - - - -', {
+            reply_markup: Markup.removeKeyboard().reply_markup
+        });
+        ctx.reply(faDic.dialogEnterSCDLLink, {
+            reply_markup: keyboards.backBtnKeyboard(faDic).reply_markup
+        });
     }
 });
 
@@ -233,7 +245,39 @@ bot.on('message', async ctx => {
         });
 
         downloader.startDownload();
-    } 
+    } else if (status === 'IN_SOUNDCLOUD_LINK') {
+        const ScdlDownloader = require('./utils/soundcloud-downloader');
+        const downloader = new ScdlDownloader(ctx.message.text);
+
+        downloader.on('error', err => {
+            setStatus(ctx, 'MAIN');
+                ctx.reply(dic.dialogDownloadFailed, {
+                    reply_to_message_id: ctx.message.message_id,
+                    reply_markup: keyboards.mainKeyboard(dic).reply_markup
+                });
+                console.log(err);
+        });
+
+        downloader.on('download-started', () => {
+            ctx.reply(dic.dialogDownloading);
+        });
+
+        downloader.on('finished', async data => {
+            ctx.reply(dic.dialogYTUploading);
+            await ctx.replyWithAudio({source: data.path}, {
+                caption: `Downloaded by @bestMusicDownloaderBot`,
+                reply_markup: keyboards.mainKeyboard(dic).reply_markup
+            });
+            fs.unlink(data.path, err => {
+                if (err) throw err;
+                setStatus(ctx, 'MAIN');
+            });
+        });
+
+        ctx.reply(dic.dialogWaitingForSCDL);
+
+        downloader.startDownload();
+    }
 });
 
 //* END CODING HERE

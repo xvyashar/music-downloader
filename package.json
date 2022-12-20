@@ -18,6 +18,7 @@
     "mongoose": "^6.8.0",
     "progress-stream": "^2.0.0",
     "sanitize-filename": "^1.6.3",
+    "soundcloud-downloader": "^1.0.0",
     "telegraf": "^4.11.2",
     "youtube-mp3-downloader": "^0.7.11",
     "ytdl-core": "^4.11.2"

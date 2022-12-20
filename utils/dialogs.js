@@ -13,6 +13,8 @@ exports.enDic = {
     dialogDownloadStarting: 'Download is starting...',
     dialogDownloading: 'Downloading...',
     dialogYTUploading: 'Uploading to telegram...',
+    dialogEnterSCDLLink: 'Enter a soundcloud link',
+    dialogWaitingForSCDL: 'Waiting for Soundcloud...',
     inlineKeyBack: 'Back to main menu'
 };
 
@@ -31,5 +33,7 @@ exports.faDic = {
     dialogDownloading: 'در حال دانلود...',
     dialogDownloadStarting: 'در حال شروع دانلود...',
     dialogYTUploading: 'در حال آپلود در تلگرام...',
+    dialogEnterSCDLLink: 'لینک ساند ساندکلود را قرار دهید',
+    dialogWaitingForSCDL: 'در انتظار برای دریافت پاسخ از ساندکلود...',
     inlineKeyBack: 'برگشت به منو اصلی'
 };
