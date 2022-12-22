@@ -22,13 +22,14 @@ const requestOptions = { maxRedirects: 5 };
 class youtubeDownloader extends EventEmitter {
 
     //? INIT CONSTRUCTOR
-    constructor (options = { link: '', quality: 'highestaudio' }){
+    constructor (options = { link: '', quality: 'highestaudio', bitrate: 128 }){
         super();
         
         //? VALID LINK
         if (!options.link.startsWith(youtubeBaseUrl)) return this.emit('error', { message: 'BAD_LINK' });
         this.link = options.link;
         this.quality = options.quality;
+        this.bitrate = options.bitrate;
 
         ffmpeg.setFfmpegPath(ffmpegPath);
     }
@@ -89,7 +90,7 @@ class youtubeDownloader extends EventEmitter {
                 new ffmpeg({
                     source: stream.pipe(str)
                 })
-                .audioBitrate(audioBitrate || 192)
+                .audioBitrate(audioBitrate || this.bitrate)
                 .withAudioCodec('libmp3lame')
                 .toFormat('mp3')
                 .outputOptions(...outputOptions)

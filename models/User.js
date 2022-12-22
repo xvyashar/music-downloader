@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'EN',
         required: true
+    },
+    quality: {
+        type: mongoose.SchemaTypes.Number,
+        default: 128,
+        required: false
     }
 });
 

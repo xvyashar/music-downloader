@@ -1,9 +1,10 @@
 exports.enDic = {
+    lang: 'English',
     keyboardSearch: '🔍 Search',
     keyboardSpotifyLink: '🟢 Spotify Link',
     keyboardSoundcloudLink: '🟠 SoundCloud Link',
     keyboardYoutubeLink: '🔴 Youtube Link',
-    keyboardSettings: '⚙ Settings',
+    keyboardSettings: 'Settings',
     dialogInMainMenu: 'Main Menu',
     dialogEnterMusicNameToSearch: 'Enter a track name to search',
     dialogForbinned: "Sorry!\nOur local server can't connect to spotify service",
@@ -15,15 +16,21 @@ exports.enDic = {
     dialogYTUploading: 'Uploading to telegram...',
     dialogEnterSCDLLink: 'Enter a soundcloud link',
     dialogWaitingForSCDL: 'Waiting for Soundcloud...',
-    inlineKeyBack: 'Back to main menu'
+    inlineKeyBack: 'Back to main menu',
+    keyboardChangeLang: 'Change Language',
+    dialogCurrent: 'Current:',
+    keyboardChangeQuality: 'Change Audio Quality',
+    dialogQualityChanged: 'Audio quality changed to',
+    dialogInSetting: 'Settings'
 };
 
 exports.faDic = {
+    lang: 'فارسی',
     keyboardSearch: '🔍 جست و جو',
     keyboardSpotifyLink: '🟢 لینک اسپاتیفای',
     keyboardSoundcloudLink: '🟠 لینک ساندکلود',
     keyboardYoutubeLink: '🔴 لینک یوتیوب',
-    keyboardSettings: '⚙ تنظیمات',
+    keyboardSettings: 'تنظیمات',
     dialogInMainMenu: 'منوی اصلی',
     dialogEnterMusicNameToSearch: 'نام ترک مورد نظر را وارد کنید',
     dialogForbinned: "با عرض پوذش\nسرویس اسپاتیفای در سرور لوکال ما در دسترس نمی باشد",
@@ -35,5 +42,10 @@ exports.faDic = {
     dialogYTUploading: 'در حال آپلود در تلگرام...',
     dialogEnterSCDLLink: 'لینک ساند ساندکلود را قرار دهید',
     dialogWaitingForSCDL: 'در انتظار برای دریافت پاسخ از ساندکلود...',
-    inlineKeyBack: 'برگشت به منو اصلی'
+    inlineKeyBack: 'برگشت به منو اصلی',
+    keyboardChangeLang: 'تغییر زبان',
+    dialogCurrent: 'در حال حاضر:',
+    keyboardChangeQuality: 'تغییر کیفیت صدا',
+    dialogQualityChanged: 'تغییر کیفیت صدا به',
+    dialogInSetting: 'تنظیمات'
 };

@@ -9,9 +9,10 @@ const ffmpegPath = path.join(__dirname, '..', '..', '..', '..', 'libs', 'ffmpeg'
 
 class SoundCloudDownloader extends EventEmitter{
 
-    constructor (link) {
+    constructor (link, bitrate) {
         super();
         this.link = link;
+        this.bitrate = bitrate;
         ffmpeg.setFfmpegPath(ffmpegPath);
     }
 
@@ -34,7 +35,7 @@ class SoundCloudDownloader extends EventEmitter{
             new ffmpeg({
                 source: stream
             })
-            .audioBitrate(128)
+            .audioBitrate(this.bitrate)
             .withAudioCodec('libmp3lame')
             .toFormat('mp3')
             .outputOptions(...outputOptions)

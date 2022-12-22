@@ -4,6 +4,7 @@ const axios = require('axios');
 
 //* Import Internal Modules
 const YoutubeDownloader = require('./utils/youtube-downloader');
+const ScdlDownloader = require('./utils/soundcloud-downloader');
 const fs = require('fs');
 
 //* Init Configs
@@ -14,7 +15,7 @@ const { enDic, faDic } = require('./utils/dialogs');
 
 //* DB
 connectDB();
-const { getStatus, createUser, setStatus, setLang, getLang } = require('./utils/user');
+const { getStatus, createUser, setStatus, setLang, getLang, getQuality, setQuality } = require('./utils/user');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -25,7 +26,7 @@ bot.start(ctx => {
     ctx.reply(`Welcome ${ctx.chat.first_name}!\nPlease choose your language`, {
         reply_markup: keyboards.langKeyoard.reply_markup
     });
-    createUser(ctx, { chatId: ctx.chat.id, firstName: ctx.chat.first_name, status: 'IN_LANG_MENU', lang: 'EN' });
+    createUser(ctx, { chatId: ctx.chat.id, firstName: ctx.chat.first_name, status: 'IN_LANG_MENU', lang: 'EN', quality: 128 });
 });
 
 bot.hears('En', async ctx => {
@@ -69,14 +70,14 @@ bot.hears(enDic.keyboardSearch, async ctx => {
 
 bot.hears(enDic.keyboardSpotifyLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
-        //TODO DOWNLOAD MUSIC VIA SPOTIFY LINK
+        ctx.reply(enDic.dialogForbinned);
     }
 });
 
 bot.hears(enDic.keyboardSoundcloudLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
         await setStatus(ctx, 'IN_SOUNDCLOUD_LINK');
-        ctx.reply('- - - - - - - - - - - - - - - - -', {
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
             reply_markup: Markup.removeKeyboard().reply_markup
         });
         ctx.reply(enDic.dialogEnterSCDLLink, {
@@ -88,7 +89,7 @@ bot.hears(enDic.keyboardSoundcloudLink, async ctx => {
 bot.hears(enDic.keyboardYoutubeLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
         await setStatus(ctx, 'IN_YOUTUBE_LINK');
-        ctx.reply('- - - - - - - - - - - - - - - - -', {
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
             reply_markup: Markup.removeKeyboard().reply_markup
         });
         ctx.reply(enDic.dialogEnterYTLink, {
@@ -99,11 +100,46 @@ bot.hears(enDic.keyboardYoutubeLink, async ctx => {
 
 bot.hears(enDic.keyboardSettings, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
-        //TODO CHANGE SETTINGS
+        ctx.reply(enDic.dialogInSetting, {
+            reply_markup: keyboards.settingsKeyboard(enDic).reply_markup
+        });
+    }
+});
+
+//? EN Setting's
+bot.hears(enDic.keyboardChangeLang, async ctx => {
+    if (await getStatus(ctx) === 'MAIN'){
+        await setStatus(ctx, 'IN_LANG_MENU');
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
+            reply_markup: Markup.removeKeyboard().reply_markup
+        });
+        ctx.reply(`${enDic.keyboardChangeLang}\n${enDic.dialogCurrent} ${enDic.lang}`, {
+            reply_markup: keyboards.langKeyoard.reply_markup
+        });
+    }
+});
+
+bot.hears(enDic.keyboardChangeQuality, async ctx => {
+    if (await getStatus(ctx) === 'MAIN'){
+        await setStatus(ctx, 'IN_QUALITY_SETTING');
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
+            reply_markup: Markup.removeKeyboard().reply_markup
+        });
+        const current = await getQuality(ctx);
+        ctx.reply(`${enDic.keyboardChangeQuality}\n${enDic.dialogCurrent} ${current}`, {
+            reply_markup: keyboards.qualitySelectKeyboard(enDic).reply_markup
+        });
     }
 });
 
 //? EN OPT
+bot.hears(enDic.inlineKeyBack, async ctx => {
+    await setStatus(ctx, 'MAIN');
+    ctx.reply(enDic.dialogInMainMenu, {
+        reply_markup: keyboards.mainKeyboard(enDic).reply_markup
+    });
+});
+
 bot.action(enDic.inlineKeyBack, async ctx => {
     if (await getStatus(ctx) !== 'MAIN') {
         await setStatus(ctx, 'MAIN');
@@ -125,14 +161,14 @@ bot.hears(faDic.keyboardSearch, async ctx => {
 
 bot.hears(faDic.keyboardSpotifyLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
-        //TODO DOWNLOAD MUSIC VIA SPOTIFY LINK
+        ctx.reply(enDic.dialogForbinned);
     }
 });
 
 bot.hears(faDic.keyboardSoundcloudLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
         await setStatus(ctx, 'IN_SOUNDCLOUD_LINK');
-        ctx.reply('- - - - - - - - - - - - - - - - -', {
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
             reply_markup: Markup.removeKeyboard().reply_markup
         });
         ctx.reply(faDic.dialogEnterSCDLLink, {
@@ -145,7 +181,7 @@ bot.hears(faDic.keyboardYoutubeLink, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
         if (await getStatus(ctx) === 'MAIN') {
             await setStatus(ctx, 'IN_YOUTUBE_LINK');
-            ctx.reply('- - - - - - - - - - - - - - - - -', {
+            await ctx.reply('- - - - - - - - - - - - - - - - -', {
                 reply_markup: Markup.removeKeyboard().reply_markup
             });
             ctx.reply(faDic.dialogEnterYTLink, {
@@ -157,7 +193,35 @@ bot.hears(faDic.keyboardYoutubeLink, async ctx => {
 
 bot.hears(faDic.keyboardSettings, async ctx => {
     if (await getStatus(ctx) === 'MAIN') {
-        //TODO CHANGE SETTINGS
+        ctx.reply(faDic.dialogInSetting, {
+            reply_markup: keyboards.settingsKeyboard(faDic).reply_markup
+        });
+    }
+});
+
+//? FA Setting's
+bot.hears(faDic.keyboardChangeLang, async ctx => {
+    if (await getStatus(ctx) === 'MAIN'){
+        await setStatus(ctx, 'IN_LANG_MENU');
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
+            reply_markup: Markup.removeKeyboard().reply_markup
+        });
+        ctx.reply(`${faDic.keyboardChangeLang}\n${faDic.dialogCurrent} ${faDic.lang}`, {
+            reply_markup: keyboards.langKeyoard.reply_markup
+        });
+    }
+});
+
+bot.hears(faDic.keyboardChangeQuality, async ctx => {
+    if (await getStatus(ctx) === 'MAIN'){
+        await setStatus(ctx, 'IN_QUALITY_SETTING');
+        await ctx.reply('- - - - - - - - - - - - - - - - -', {
+            reply_markup: Markup.removeKeyboard().reply_markup
+        });
+        const current = await getQuality(ctx);
+        ctx.reply(`${faDic.keyboardChangeQuality}\n${faDic.dialogCurrent} ${current}`, {
+            reply_markup: keyboards.qualitySelectKeyboard(faDic).reply_markup
+        });
     }
 });
 
@@ -175,6 +239,7 @@ bot.action(faDic.inlineKeyBack, async ctx => {
 bot.on('message', async ctx => {
     const status = await getStatus(ctx);
     const dic = await getLang(ctx) === 'EN' ? enDic : faDic;
+    const bitrate = await getQuality(ctx);
 
     if (status === 'IN_SEARCHING') {
         try {
@@ -208,7 +273,8 @@ bot.on('message', async ctx => {
         const link = `https://www.youtube.com/watch?v=${ctx.message.text.substring(ctx.message.text.lastIndexOf('/')+1)}`;
         const downloader = new YoutubeDownloader({
             link: link,
-            quality: 'highestaudio'
+            quality: 'highestaudio',
+            bitrate
         });
 
         downloader.on('error', err => {
@@ -246,8 +312,7 @@ bot.on('message', async ctx => {
 
         downloader.startDownload();
     } else if (status === 'IN_SOUNDCLOUD_LINK') {
-        const ScdlDownloader = require('./utils/soundcloud-downloader');
-        const downloader = new ScdlDownloader(ctx.message.text);
+        const downloader = new ScdlDownloader(ctx.message.text, bitrate);
 
         downloader.on('error', err => {
             setStatus(ctx, 'MAIN');
@@ -277,6 +342,30 @@ bot.on('message', async ctx => {
         ctx.reply(dic.dialogWaitingForSCDL);
 
         downloader.startDownload();
+    }else if (status === 'IN_QUALITY_SETTING') {
+        const dic = await getLang(ctx) === 'EN' ? enDic : faDic;
+        switch (ctx.message.text) {
+            case '⚪ 128':
+                await setQuality(ctx, 128);
+                await setStatus(ctx, 'MAIN');
+                await ctx.reply(`${dic.dialogQualityChanged} 128`);
+                ctx.reply(dic.dialogInMainMenu, {
+                    reply_markup: keyboards.mainKeyboard(dic).reply_markup
+                });
+                break;
+            
+            case '🟢 320':
+                await setQuality(ctx, 320);
+                await setStatus(ctx, 'MAIN');
+                await ctx.reply(`${dic.dialogQualityChanged} 320`);
+                ctx.reply(dic.dialogInMainMenu, {
+                    reply_markup: keyboards.mainKeyboard(dic).reply_markup
+                });
+                break;
+        
+            default:
+                break;
+        }
     }
 });
 

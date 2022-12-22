@@ -19,6 +19,22 @@ const backBtnKeyboard = (dic) => {
     ]);
 }
 
+const settingsKeyboard = (dic) => {
+    return Markup.keyboard([
+        [Markup.button.callback(dic.keyboardChangeLang, dic.keyboardChangeLang), Markup.button.callback(dic.keyboardChangeQuality, dic.keyboardChangeQuality)],
+        [Markup.button.callback(dic.inlineKeyBack, dic.inlineKeyBack)]
+    ]);
+}
+
+const qualitySelectKeyboard = (dic) => {
+    return Markup.keyboard([
+        [Markup.button.callback('⚪ 128', '⚪ 128'), Markup.button.callback('🟢 320', '🟢 320')],
+        [Markup.button.callback(dic.inlineKeyBack, dic.inlineKeyBack)]
+    ]);
+}
+
 exports.langKeyoard = langKeyoard;
 exports.mainKeyboard = mainKeyboard;
+exports.settingsKeyboard = settingsKeyboard;
 exports.backBtnKeyboard = backBtnKeyboard;
+exports.qualitySelectKeyboard = qualitySelectKeyboard;
