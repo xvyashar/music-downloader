@@ -1,5 +1,6 @@
 Music Downloader Bot
 ====
+A simple telegram bot for downloading music from youtube, soundcloud, and spotify using node js (java script)
 ## Bot
 Click on [preview](https://t.me/bestMusicDownloaderBot) to use the bot.\
 status: 🔘 offline
