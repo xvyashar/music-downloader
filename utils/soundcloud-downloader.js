@@ -1,3 +1,4 @@
+//* IMPORT'S
 const { EventEmitter } = require('events');
 const fs = require('fs');
 const path = require('path');
@@ -5,14 +6,18 @@ const path = require('path');
 const scdl = require('soundcloud-downloader').default;
 const ffmpeg = require('fluent-ffmpeg');
 
+//* VARS
 const ffmpegPath = path.join(__dirname, '..', '..', '..', '..', 'libs', 'ffmpeg', 'bin', 'ffmpeg.exe');
 
 class SoundCloudDownloader extends EventEmitter{
 
+    //? INIT CONSTRUCTOR
     constructor (link, bitrate) {
         super();
+
         this.link = link;
         this.bitrate = bitrate;
+
         ffmpeg.setFfmpegPath(ffmpegPath);
     }
 
@@ -30,6 +35,7 @@ class SoundCloudDownloader extends EventEmitter{
                 '-metadata', `artist=${artist}`
             ];
 
+            //? A RESPONSE RECIVED
             this.emit('download-started');
 
             new ffmpeg({

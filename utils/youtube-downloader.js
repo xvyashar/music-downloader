@@ -63,7 +63,7 @@ class youtubeDownloader extends EventEmitter {
             //? Start Download
             const stream = ytdl.downloadFromInfo(info, streamOpt);
 
-            //! Error Handling
+            //? Error Handling
             stream.on('error', err => this.emit('error', { message: err }));
 
 
